@@ -32,6 +32,7 @@ class RoomSocketServer {
                         }
                         this.rooms[message.body.rid].add(ws.id);
                     } else if (message.body.event == 'delete') {
+                        ws.rooms.delete(message.body.rid);
                         this.rooms[message.body.rid].delete(ws.id);
                         for (const id of this.rooms[message.body.rid]) {
                             this.socket.sockets[id].send(JSON.stringify({
