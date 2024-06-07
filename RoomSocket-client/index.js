@@ -47,8 +47,8 @@ text_room_id.addEventListener('click', () => {
 open.addEventListener('click', () => {
     room.open(input_room_id.value);
 
-    const room = document.createElement('div');
-    room.className = input_room_id.value;
+    const droom = document.createElement('div');
+    droom.className = input_room_id.value;
 
     const text_room_id = document.createElement('div');
     text_room_id.className = 'text-room-id';
@@ -58,9 +58,9 @@ open.addEventListener('click', () => {
     input_message.className = 'input-message';
 
     input_message.addEventListener('input', () => {
-        roomPeer.broadcast(room.className, {
+        roomPeer.broadcast(droom.className, {
             event: 'input',
-            rid: room.className,
+            rid: droom.className,
             text: input_message.value
         })
     });
@@ -70,15 +70,15 @@ open.addEventListener('click', () => {
     close.innerHTML = 'close';
 
     close.addEventListener('click', () => {
-        room.close(room.className);
-        rooms.removeChild(room);
+        room.close(droom.className);
+        rooms.removeChild(droom);
     });
 
-    room.appendChild(text_room_id);
-    room.appendChild(input_message);
-    room.appendChild(close);
+    droom.appendChild(text_room_id);
+    droom.appendChild(input_message);
+    droom.appendChild(close);
 
-    rooms.appendChild(room);
+    rooms.appendChild(droom);
 })
 
 peer.onmessage = (e) => {

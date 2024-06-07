@@ -1,4 +1,4 @@
-class SignalingSocketServer{
+class SignalingSocketServer {
     constructor (options) {
         this.socket = options.socket;
 
