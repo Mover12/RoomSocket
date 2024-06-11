@@ -1,8 +1,8 @@
-import Peer from './src/Peer';
-import Socket from './src/Socket';
-import SocketPeer from './src/SocketPeer';
-import Room from './src/Room';
-import RoomPeer from './src/RoomPeer';
+import Peer from '../src/Peer';
+import Socket from '../src/Socket';
+import SocketPeer from '../src/SocketPeer';
+import Room from '../src/Room';
+import RoomPeer from '../src/RoomPeer';
 
 const UID = Array.from(Array(8), () => Math.floor(Math.random() * 16).toString(16)).join('');
 
@@ -45,22 +45,23 @@ text_room_id.addEventListener('click', () => {
 });
 
 open.addEventListener('click', () => {
-    room.open(input_room_id.value);
+    const rid = input_room_id.value;
+    room.open(rid);
 
     const droom = document.createElement('div');
-    droom.className = input_room_id.value;
+    droom.className = `rid-${rid}`;
 
     const text_room_id = document.createElement('div');
     text_room_id.className = 'text-room-id';
-    text_room_id.innerHTML = input_room_id.value;
+    text_room_id.innerHTML = rid;
 
     const input_message = document.createElement('input');
     input_message.className = 'input-message';
 
     input_message.addEventListener('input', () => {
-        roomPeer.broadcast(droom.className, {
+        roomPeer.broadcast(rid, {
             event: 'input',
-            rid: droom.className,
+            rid: rid,
             text: input_message.value
         })
     });
@@ -85,6 +86,6 @@ peer.onmessage = (e) => {
     const [id, event] = e.detail;
     const message = JSON.parse(event.data);
     if (message.event == 'input') {
-        rooms.querySelector(`.${message.rid}`).querySelector('.input-message').value = message.text
+        rooms.querySelector(`.rid-${message.rid}`).querySelector('.input-message').value = message.text
     }
 }

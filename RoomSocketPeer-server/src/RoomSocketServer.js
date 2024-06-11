@@ -32,20 +32,22 @@ class RoomSocketServer {
                         }
                         this.rooms[message.body.rid].add(ws.id);
                     } else if (message.body.event == 'delete') {
-                        ws.rooms.delete(message.body.rid);
-                        this.rooms[message.body.rid].delete(ws.id);
-                        for (const id of this.rooms[message.body.rid]) {
-                            this.socket.sockets[id].send(JSON.stringify({
-                                url: 'room',
-                                body: {
-                                    event: 'delete',
-                                    rid: message.body.rid,
-                                    id: ws.id
-                                }
-                            }));
-                        }
-                        if(this.rooms[message.body.rid].size == 0) {
-                            delete this.rooms[message.body.rid];
+                        if(ws.rooms.has(message.body.rid)) {
+                            ws.rooms.delete(message.body.rid);
+                            this.rooms[message.body.rid].delete(ws.id);
+                            for (const id of this.rooms[message.body.rid]) {
+                                this.socket.sockets[id].send(JSON.stringify({
+                                    url: 'room',
+                                    body: {
+                                        event: 'delete',
+                                        rid: message.body.rid,
+                                        id: ws.id
+                                    }
+                                }));
+                            }
+                            if(this.rooms[message.body.rid].size == 0) {
+                                delete this.rooms[message.body.rid];
+                            }
                         }
                     }
                 }

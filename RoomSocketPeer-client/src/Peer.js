@@ -72,10 +72,13 @@ class Peer extends EventEmitter {
             delete this.dataChannels[id];
             delete this.peerConnections[id];
         }
+        this.emit('close', [id]);
     }
 
     send(id, data) {
-        this.dataChannels[id].send(JSON.stringify(data))
+        if (this.dataChannels[id].readyState == 'open') {
+            this.dataChannels[id].send(JSON.stringify(data))
+        }
     }
 }
 
